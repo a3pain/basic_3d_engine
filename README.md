@@ -7,7 +7,7 @@ Cross-Platform Graphics Support:
 - Vulkan for other platforms
 
 Architecture includes:
-Core engine functionality
-Platform abstraction layer
-Graphics rendering system
-Test suite
+- Core engine functionality
+- Platform abstraction layer
+- Graphics rendering system
+- Test suite
