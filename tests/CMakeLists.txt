@@ -6,12 +6,12 @@ add_executable(engine_tests
     main.cpp
 )
 
-# Link against GTest and our engine
+# Link against GTest and our engine library
 target_link_libraries(engine_tests
     PRIVATE
         GTest::GTest
         GTest::Main
-        ${PROJECT_NAME}
+        engine_lib
 )
 
 # Add tests to CTest

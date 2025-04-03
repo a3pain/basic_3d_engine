@@ -21,74 +21,45 @@ else()
     set(PLATFORM_VULKAN ON)
 endif()
 
-# Core source files that are common across all platforms
-set(SOURCES
-    src/core/engine.cpp      # Main engine implementation
-    src/platform/platform.cpp # Platform abstraction layer
-)
-
-# Platform-specific source files
-# Metal renderer for macOS
-if(PLATFORM_METAL)
-    list(APPEND SOURCES
-        src/graphics/metal/metal_renderer.cpp
-    )
-# Vulkan renderer for other platforms
-else()
-    list(APPEND SOURCES
-        src/graphics/vulkan/vulkan_renderer.cpp
-    )
-endif()
-
-# Header files that define the public API
-set(HEADERS
-    include/core/engine.hpp      # Main engine interface
-    include/platform/platform.hpp # Platform abstraction interface
-)
-
-# Platform-specific header files
-if(PLATFORM_METAL)
-    list(APPEND HEADERS
-        include/graphics/metal/metal_renderer.hpp
-    )
-else()
-    list(APPEND HEADERS
-        include/graphics/vulkan/vulkan_renderer.hpp
-    )
-endif()
-
-# Create the main executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-# Set include directories for the project
-# This allows including headers using the project name as a prefix
-target_include_directories(${PROJECT_NAME} 
-    PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
 # Platform-specific library configuration
 if(PLATFORM_METAL)
     # Find required macOS frameworks
-    find_library(METAL_LIBRARY Metal)        # Metal graphics framework
-    find_library(FOUNDATION_LIBRARY Foundation) # Core Foundation framework
-    find_library(QUARTZCORE_LIBRARY QuartzCore) # Core Animation framework
+    find_library(METAL_LIBRARY Metal)
+    find_library(FOUNDATION_LIBRARY Foundation)
+    find_library(QUARTZCORE_LIBRARY QuartzCore)
     
-    # Link against required frameworks
-    target_link_libraries(${PROJECT_NAME} 
-        PRIVATE 
-            ${METAL_LIBRARY}
-            ${FOUNDATION_LIBRARY}
-            ${QUARTZCORE_LIBRARY}
+    # Add Metal framework include path
+    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers)
+    
+    # Set platform-specific variables
+    set(PLATFORM_LIBRARIES 
+        ${METAL_LIBRARY}
+        ${FOUNDATION_LIBRARY}
+        ${QUARTZCORE_LIBRARY}
     )
 else()
-    # Find and link Vulkan SDK
+    # Find Vulkan SDK
     find_package(Vulkan REQUIRED)
-    target_link_libraries(${PROJECT_NAME} 
-        PRIVATE 
-            Vulkan::Vulkan
-    )
+    
+    # Set platform-specific variables
+    set(PLATFORM_LIBRARIES Vulkan::Vulkan)
 endif()
+
+# Set global include directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Add src directory to get source files
+add_subdirectory(src)
+
+# Create library target for engine code
+add_library(engine_lib STATIC ${SOURCES} ${HEADERS})
+
+# Link platform-specific libraries to the engine library
+target_link_libraries(engine_lib PRIVATE ${PLATFORM_LIBRARIES})
+
+# Create main executable
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE engine_lib)
 
 # Enable testing and add test subdirectory
 enable_testing()
