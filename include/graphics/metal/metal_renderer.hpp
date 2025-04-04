@@ -1,9 +1,11 @@
 #pragma once
 
+#include "graphics/renderer.hpp"
 #include <memory>
-#include <Metal/Metal.hpp>
 
 namespace Engine {
+
+class Window;
 
 /**
  * @description: class provides a Metal-specific implementation of the
@@ -12,13 +14,14 @@ namespace Engine {
  * uses the PIMPL pattern to hide implementation details and
  * provide a clean interface for the rest of the engine
  */
-class MetalRenderer {
+class MetalRenderer : public Renderer {
 public:
     MetalRenderer();
-    ~MetalRenderer();
+    ~MetalRenderer() override;
 
-    bool initialize();
-    void cleanup();
+    void initialize() override;
+    void render() override;
+    void cleanup() override;
 
     void beginFrame();
     void endFrame();
@@ -27,6 +30,9 @@ public:
     void submitCommandBuffer();
 
     void present();
+
+    // Set the window to render to
+    void setWindow(Window* window);
 
 private:
     /**

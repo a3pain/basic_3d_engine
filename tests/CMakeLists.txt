@@ -4,6 +4,7 @@ find_package(GTest REQUIRED)
 # Add test executable
 add_executable(engine_tests
     main.cpp
+    engine_test.cpp
 )
 
 # Link against GTest and our engine library

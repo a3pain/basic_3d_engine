@@ -16,6 +16,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(APPLE)
     set(PLATFORM_METAL ON)
     set(PLATFORM_VULKAN OFF)
+    
+    # Enable Objective-C++
+    enable_language(OBJCXX)
+    set(CMAKE_OBJCXX_STANDARD 20)
+    set(CMAKE_OBJCXX_STANDARD_REQUIRED ON)
+    set(CMAKE_OBJCXX_EXTENSIONS OFF)
 else()
     set(PLATFORM_METAL OFF)
     set(PLATFORM_VULKAN ON)
@@ -27,15 +33,20 @@ if(PLATFORM_METAL)
     find_library(METAL_LIBRARY Metal)
     find_library(FOUNDATION_LIBRARY Foundation)
     find_library(QUARTZCORE_LIBRARY QuartzCore)
+    find_library(COCOA_LIBRARY Cocoa)
     
     # Add Metal framework include path
-    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers)
+    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Versions/A/Headers)
+    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers)
+    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers)
+    include_directories(/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Cocoa.framework/Headers)
     
     # Set platform-specific variables
     set(PLATFORM_LIBRARIES 
         ${METAL_LIBRARY}
         ${FOUNDATION_LIBRARY}
         ${QUARTZCORE_LIBRARY}
+        ${COCOA_LIBRARY}
     )
 else()
     # Find Vulkan SDK

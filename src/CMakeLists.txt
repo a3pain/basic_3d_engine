@@ -1,13 +1,14 @@
 # Core source files that are common across all platforms
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
 )
 
 # Platform-specific source files
 if(PLATFORM_METAL)
     list(APPEND SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/graphics/metal/metal_renderer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/graphics/metal/metal_renderer.mm
+        ${CMAKE_CURRENT_SOURCE_DIR}/platform/macos/platform.mm
+        ${CMAKE_CURRENT_SOURCE_DIR}/platform/macos/window.mm
     )
 else()
     list(APPEND SOURCES
@@ -19,9 +20,10 @@ endif()
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/core/engine.hpp
     ${CMAKE_SOURCE_DIR}/include/platform/platform.hpp
+    ${CMAKE_SOURCE_DIR}/include/platform/window.hpp
 )
 
-# Platform-specific header files
+# Platform-specific headers
 if(PLATFORM_METAL)
     list(APPEND HEADERS
         ${CMAKE_SOURCE_DIR}/include/graphics/metal/metal_renderer.hpp
