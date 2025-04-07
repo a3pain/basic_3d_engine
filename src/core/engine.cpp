@@ -25,7 +25,7 @@ Engine::~Engine() = default;
 
 // Engine initialization
 bool Engine::initialize(const std::string& windowTitle, uint32_t width, uint32_t height) {
-    if (pImpl->isInitialized) {
+    if (pImpl->isInitialized == true) {
         return true;
     }
 
@@ -81,6 +81,10 @@ void Engine::shutdown() {
 
     pImpl->isInitialized = false;
     pImpl->isRunning = false;
+}
+
+bool Engine::isRunning() const {
+    return pImpl->isRunning;
 }
 
 } // namespace Engine

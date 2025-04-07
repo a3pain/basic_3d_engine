@@ -29,6 +29,9 @@ public:
     // shuts down engine, cleans up resources
     void shutdown();
 
+    // returns whether the engine is currently running
+    bool isRunning() const;
+
 private:
     /**
      * @brief Forward declaration of the implementation class

@@ -1,60 +1,38 @@
-<<<<<<< HEAD
+#.gitignore
+.gitignore
+
 # Build directories
 build/
 out/
-cmake-build-*/
+bin/
+lib/
 
-# IDE specific files
-.idea/
+# IDE files
 .vscode/
+.idea/
 *.swp
 *.swo
-.DS_Store
+*~
 
-# Compiled Object files
-*.slo
-*.lo
+# Compiled files
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+*.exe
+*.dll
 *.so
 *.dylib
-*.dll
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# CMake generated files
+# CMake files
 CMakeCache.txt
 CMakeFiles/
-=======
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
+CMakeScripts/
+Testing/
 Makefile
->>>>>>> 6a6a64629ec942bceffd6a63eeaffa232222f686
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-<<<<<<< HEAD
-_deps 
-=======
 _deps
-CMakeUserPresets.json
->>>>>>> 6a6a64629ec942bceffd6a63eeaffa232222f686
+
+# Session notes
+session_notes.md

@@ -31,6 +31,9 @@ public:
     bool supportsVulkan() const;
     bool supportsOpenGL() const;
 
+    // Testing support
+    void setShouldClose(bool value);
+
 private:
     Platform();
     ~Platform();
