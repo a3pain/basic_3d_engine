@@ -28,9 +28,18 @@ public:
     std::unique_ptr<Window> createWindow(int width, int height, const std::string& title) {
         auto window = std::make_unique<Window>(width, height, title);
         NSWindow* nsWindow = static_cast<NSWindow*>(window->getNativeHandle());
+        
+        // Don't release the window when closed
         [nsWindow setReleasedWhenClosed:NO];
-        [[nsWindow standardWindowButton:NSWindowCloseButton] setTarget:NSApp];
-        [[nsWindow standardWindowButton:NSWindowCloseButton] setAction:@selector(terminate:)];
+        
+        // Set up window close button to trigger application termination
+        NSButton* closeButton = [nsWindow standardWindowButton:NSWindowCloseButton];
+        [closeButton setTarget:NSApp];
+        [closeButton setAction:@selector(terminate:)];
+        
+        // Make window key and order front
+        [nsWindow makeKeyAndOrderFront:nil];
+        
         return window;
     }
 
@@ -65,6 +74,10 @@ public:
 
     bool shouldClose() const {
         return shouldCloseFlag;
+    }
+
+    void setShouldClose(bool value) {
+        shouldCloseFlag = value;
     }
 
     bool supportsMetal() const {
@@ -132,6 +145,10 @@ bool Platform::supportsVulkan() const {
 
 bool Platform::supportsOpenGL() const {
     return pImpl->supportsOpenGL();
+}
+
+void Platform::setShouldClose(bool value) {
+    pImpl->setShouldClose(value);
 }
 
 } // namespace Engine 

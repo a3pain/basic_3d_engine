@@ -1,25 +1,41 @@
 #include <gtest/gtest.h>
 #include "core/engine.hpp"
+#include "platform/platform.hpp"
 
 TEST(EngineTest, Initialization) {
     Engine::Engine engine;
-    EXPECT_TRUE(engine.initialize("Test Window", 800, 600));
+    EXPECT_TRUE(engine.initialize());
 }
 
 TEST(EngineTest, DoubleInitialization) {
     Engine::Engine engine;
-    EXPECT_TRUE(engine.initialize("Test Window", 800, 600));
-    EXPECT_TRUE(engine.initialize("Test Window", 800, 600)); // Should return true as already initialized
+    EXPECT_TRUE(engine.initialize());
+    EXPECT_FALSE(engine.initialize()); // Should return false as already initialized
 }
 
 TEST(EngineTest, RunWithoutInitialization) {
     Engine::Engine engine;
-    EXPECT_THROW(engine.run(), std::runtime_error);
+    engine.run();
+    EXPECT_FALSE(engine.isRunning());
 }
 
 TEST(EngineTest, Shutdown) {
     Engine::Engine engine;
-    EXPECT_TRUE(engine.initialize("Test Window", 800, 600));
+    EXPECT_TRUE(engine.initialize());
     engine.shutdown();
-    EXPECT_THROW(engine.run(), std::runtime_error); // Should fail as engine is shut down
+    EXPECT_FALSE(engine.isRunning());
+}
+
+TEST(EngineTest, WindowClosing) {
+    Engine::Engine engine;
+    EXPECT_TRUE(engine.initialize());
+    
+    // Simulate window close event
+    Engine::Platform::getInstance().setShouldClose(true);
+    
+    // Run one frame to process the close event
+    engine.run();
+    
+    // Verify the engine has stopped
+    EXPECT_FALSE(engine.isRunning());
 } 

@@ -13,6 +13,10 @@ target_link_libraries(engine_tests
         GTest::GTest
         GTest::Main
         engine_lib
+        "-framework Cocoa"
+        "-framework Metal"
+        "-framework QuartzCore"
+        "-framework Foundation"
 )
 
 # Add tests to CTest
