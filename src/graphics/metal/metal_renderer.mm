@@ -22,24 +22,28 @@ public:
     void initialize() {
         // Create Metal device
         device = MTLCreateSystemDefaultDevice();
-        if (!device) {
-            throw std::runtime_error("Failed to create Metal device");
+        if(!device) {
+            throw std::runtime_error("Failed to create Metal Device");
         }
 
         // Create command queue
         commandQueue = [device newCommandQueue];
-        if (!commandQueue) {
+        if(!commandQueue) {
             throw std::runtime_error("Failed to create command queue");
         }
     }
 
     void setWindow(Window* newWindow) {
         window = newWindow;
-        if (!window) return;
+        if (!window) {
+            return;
+        }
 
         // Get the native window handle
         NSWindow* nsWindow = static_cast<NSWindow*>(window->getNativeHandle());
-        if (!nsWindow) return;
+        if (!nsWindow) {
+            return;
+        }
 
         // Create Metal layer
         layer = [CAMetalLayer layer];
